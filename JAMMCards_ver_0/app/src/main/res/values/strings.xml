@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JAMMCards</string>
+    <string name="card_text_hint">Enter text for the card</string>
+    <string name="card_show_label">Show</string>
+</resources>
