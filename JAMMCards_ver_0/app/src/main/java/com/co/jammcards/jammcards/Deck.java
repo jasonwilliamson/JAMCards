@@ -36,13 +36,13 @@ public class Deck {
 
     public void createCards(){
         mCards = new ArrayList<>();
-        for(int i = 0; i < 100; i++){
+        /*for(int i = 0; i < 100; i++){
             Card card = new Card();
             card.setText("Card #" + i);
             card.setShow(i % 2 == 0);  //Every other one
             card.setDeck(mTitle);
             mCards.add(card);
-        }
+        }*/
     }
 
     public List<Card> getCards() {
@@ -56,5 +56,17 @@ public class Deck {
             }
         }
         return null;
+    }
+
+    public void addCard(Card c) {
+        mCards.add(c);
+    }
+
+    public void deleteCard(Card c) {
+        for(Card card:mCards) {
+            if(card.getId().equals(c.getId())) {
+                mCards.remove(c);
+            }
+        }
     }
 }

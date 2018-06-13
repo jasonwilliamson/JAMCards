@@ -19,7 +19,8 @@
         <activity android:name=".CardListActivity"
             android:parentActivityName=".DeckListActivity">
         </activity>
-        <activity android:name=".CardPagerActivity">
+        <activity android:name=".CardPagerActivity"
+                  android:parentActivityName=".CardPagerActivity">
         </activity>
     </application>
 

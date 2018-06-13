@@ -2,4 +2,9 @@
     <string name="app_name">JAMMCards</string>
     <string name="card_text_hint">Enter text for the card</string>
     <string name="card_show_label">Show</string>
+    <string name="new_card">New Card</string>
+    <string name="show_subtitle">Show Card Count</string>
+    <string name="hide_subtitle">Hide Card Count</string>
+    <string name="subtite_format">%1$d cards</string>
+    <string name="delete_card">Delete Card</string>
 </resources>

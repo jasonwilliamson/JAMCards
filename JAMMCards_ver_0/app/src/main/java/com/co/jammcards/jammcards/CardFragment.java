@@ -1,10 +1,14 @@
 package com.co.jammcards.jammcards;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -42,6 +46,8 @@ public class CardFragment extends Fragment {
         //        .getSerializableExtra(CardActivity.EXTRA_CARD_ID);
         UUID cardId = (UUID) getArguments().getSerializable(ARG_CARD_ID);
         mCard = mCurrentDeck.getCard(cardId);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -79,5 +85,25 @@ public class CardFragment extends Fragment {
 
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_card, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.delete_card:
+                mCurrentDeck.deleteCard(mCard);
+                Intent intent = CardListActivity
+                        .newIntent(getActivity(), mCurrentDeck.getId());
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
