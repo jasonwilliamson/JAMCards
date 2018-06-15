@@ -19,6 +19,7 @@ public class CardPagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Card> mCards;
+    private Card mCard;
     private Deck mCurrentDeck;
 
     public static Intent newIntent(Context packageContext, UUID cardId) {
@@ -28,7 +29,7 @@ public class CardPagerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected  void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_pager);
 
@@ -37,8 +38,12 @@ public class CardPagerActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.card_view_pager);
 
-        mCurrentDeck = DeckLab.get(this).getCurrentDeck();
-        mCards = mCurrentDeck.getCards();
+        //mCurrentDeck = DeckLab.get(this).getCurrentDeck();
+        //mCards = mCurrentDeck.getCards();
+        mCard = CardLab.get(this).getCard(cardId);
+        this.setTitle(mCard.getTitle());
+
+        mCards = CardLab.get(this).getCards(mCard.getDECK_uuid());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {

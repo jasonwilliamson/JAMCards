@@ -1,17 +1,21 @@
 package com.co.jammcards.jammcards;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +38,9 @@ public class CardListFragment extends Fragment {
         UUID deckId = (UUID) getActivity().getIntent()
                 .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
         mDeck = DeckLab.get(getActivity()).getDeck(deckId);
+
+        getActivity().setTitle(mDeck.getTitle());
+
 
         setHasOptionsMenu(true);
     }
@@ -85,11 +92,44 @@ public class CardListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_card:
-                Card card = new Card();
-                mDeck.addCard(card);
-                Intent intent = CardPagerActivity
-                        .newIntent(getActivity(), card.getId());
-                startActivity(intent);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                final EditText editText = new EditText(getActivity());
+
+                //Limit input size here...
+                InputFilter[] fa = new InputFilter[1];
+                fa[0] = new InputFilter.LengthFilter(20);
+                editText.setFilters(fa);
+
+                alert.setMessage("Enter Card Name (Required!");
+                alert.setTitle("New Card");
+                alert.setView(editText);
+                alert.setPositiveButton("Add Card", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String cardTitle = editText.getText().toString();
+                        if(!cardTitle.isEmpty()){
+                            Card card = new Card();
+                            card.setTitle(cardTitle);
+                            card.setDECK_uuid(mDeck.getId());
+                            card.setShown(true);
+                            CardLab.get(getActivity()).addCard(card);
+
+                            Intent intent = CardPagerActivity
+                                    .newIntent(getActivity(), card.getId());
+                            startActivity(intent);
+
+                        }
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //nothing
+                    }
+                });
+
+                alert.show();
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -102,7 +142,8 @@ public class CardListFragment extends Fragment {
     }
 
     private void updateSubtitle() {
-        int cardCount = mDeck.getCards().size();
+        CardLab cardLab = CardLab.get(getActivity());
+        int cardCount = cardLab.getCards(mDeck.getId()).size();
         String subtitle = getString(R.string.subtite_format, cardCount);
 
         if(!mSubtitleVisible) {
@@ -115,13 +156,13 @@ public class CardListFragment extends Fragment {
 
     private void updateUI() {
         //we need cards here...
-        List<Card> cards = mDeck.getCards();
+        List<Card> cards = CardLab.get(getActivity()).getCards(mDeck.getId());
 
         if (mAdapter == null) {
             mAdapter = new CardAdapter(cards);
             mCardRecyclerView.setAdapter(mAdapter);
         } else {
-            //mAdapter.setCards(cards);
+            mAdapter.setCards(cards);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -132,20 +173,21 @@ public class CardListFragment extends Fragment {
         implements View.OnClickListener{
 
         private Card mCard;
-        private TextView mTitleTextView;
+        private TextView mTextView;
         private ImageView mShownImageView;
 
         public CardHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_card, parent, false));
             itemView.setOnClickListener(this);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.card_text);
+            mTextView = (TextView) itemView.findViewById(R.id.card_text);  //TODO something not right need TITLE
             mShownImageView = (ImageView) itemView.findViewById(R.id.card_shown);
         }
 
         public void bind(Card card) {
             mCard = card;
-            mTitleTextView.setText(mCard.getText());
-            mShownImageView.setVisibility(card.isShow() ? View.VISIBLE : View.GONE);
+            //mTextView.setText(mCard.getText()); //TODO changed to title but not appearing
+            mTextView.setText(mCard.getTitle());
+            mShownImageView.setVisibility(card.isShown() ? View.VISIBLE : View.GONE);
         }
 
         @Override

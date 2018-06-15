@@ -38,16 +38,19 @@ public class CardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mCard = new Card();
-        //UUID cardId = (UUID) getActivity().getIntent()
-        //        .getSerializableExtra(CardActivity()).
+
         mCurrentDeck = DeckLab.get(getActivity()).getCurrentDeck();
-        //UUID cardId = (UUID) getActivity().getIntent()
-        //        .getSerializableExtra(CardActivity.EXTRA_CARD_ID);
+
         UUID cardId = (UUID) getArguments().getSerializable(ARG_CARD_ID);
-        mCard = mCurrentDeck.getCard(cardId);
+        mCard = CardLab.get(getActivity()).getCard(cardId);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CardLab.get(getActivity()).updateCard(mCard);
     }
 
     @Override
@@ -56,11 +59,11 @@ public class CardFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_card, container, false);
 
         mShowCheckBox = (CheckBox)v.findViewById(R.id.card_show);
-        mShowCheckBox.setChecked(mCard.isShow());
+        mShowCheckBox.setChecked(mCard.isShown());
         mShowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCard.setShow(isChecked);
+                mCard.setShown(isChecked);
             }
         });
 
@@ -96,11 +99,16 @@ public class CardFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-            case R.id.delete_card:
-                mCurrentDeck.deleteCard(mCard);
+            case R.id.delete_card:  //TODO implement delete card!!
+                CardLab.get(getActivity()).deleteCard(mCard);
                 Intent intent = CardListActivity
                         .newIntent(getActivity(), mCurrentDeck.getId());
                 startActivity(intent);
+
+                /*mCurrentDeck.deleteCard(mCard);
+                Intent intent = CardListActivity
+                        .newIntent(getActivity(), mCurrentDeck.getId());
+                startActivity(intent);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -5,20 +5,18 @@ import java.util.UUID;
 public class Card {
 
     private UUID mId;
+    private String mTitle;
     private String mText;
-    private boolean mShow;
-    private String mDeck;
-
-    public String getDeck() {
-        return mDeck;
-    }
-
-    public void setDeck(String deck) {
-        mDeck = deck;
-    }
+    private boolean mIsShown;
+    private UUID mDECK_uuid;
 
     public Card() {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Card(UUID id) {
+        mId = id;
+        //mDECK_uuid = deckId;
     }
 
     public UUID getId() {
@@ -29,6 +27,14 @@ public class Card {
         mId = id;
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
     public String getText() {
         return mText;
     }
@@ -37,11 +43,19 @@ public class Card {
         mText = text;
     }
 
-    public boolean isShow() {
-        return mShow;
+    public boolean isShown() {
+        return mIsShown;
     }
 
-    public void setShow(boolean show) {
-        mShow = show;
+    public void setShown(boolean show) {
+        mIsShown = show;
+    }
+
+    public UUID getDECK_uuid() {
+        return mDECK_uuid;
+    }
+
+    public void setDECK_uuid(UUID DECK_uuid) {
+        mDECK_uuid = DECK_uuid;
     }
 }
