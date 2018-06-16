@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="0dp">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp">
@@ -15,13 +14,14 @@
         <ImageView
             android:id="@+id/card_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <CheckBox
             android:id="@+id/card_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/card_camera"
             android:layout_alignParentStart="true"
             android:text="@string/card_show_label"
             android:textAlignment="viewStart" />
@@ -31,6 +31,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/card_text_hint" />
+
+        <ImageButton
+            android:id="@+id/card_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="16dp"
+            android:src="@android:drawable/ic_menu_camera" />
+
 
     </RelativeLayout>
 

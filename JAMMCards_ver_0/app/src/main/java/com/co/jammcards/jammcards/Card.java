@@ -58,4 +58,8 @@ public class Card {
     public void setDECK_uuid(UUID DECK_uuid) {
         mDECK_uuid = DECK_uuid;
     }
+
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
 }

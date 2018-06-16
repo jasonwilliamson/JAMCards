@@ -1,8 +1,15 @@
 package com.co.jammcards.jammcards;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,17 +21,26 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 public class CardFragment extends Fragment {
 
     private static final String ARG_CARD_ID = "card_id";
+    private static final int REQUEST_PHOTO = 0;
 
     private Card mCard;
+    private File mPhotoFile;
     private Deck mCurrentDeck;
     private EditText mCardText;
     private CheckBox mShowCheckBox;
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
+
 
     public static CardFragment newInstance(UUID cardId) {
         Bundle args = new Bundle();
@@ -44,6 +60,8 @@ public class CardFragment extends Fragment {
         UUID cardId = (UUID) getArguments().getSerializable(ARG_CARD_ID);
         mCard = CardLab.get(getActivity()).getCard(cardId);
 
+        mPhotoFile = CardLab.get(getActivity()).getPhotoFile(mCard);
+
         setHasOptionsMenu(true);
     }
 
@@ -51,6 +69,23 @@ public class CardFragment extends Fragment {
     public void onPause() {
         super.onPause();
         CardLab.get(getActivity()).updateCard(mCard);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_PHOTO){
+            Uri uri = FileProvider.getUriForFile(getActivity(),
+                    "com.co.jammcards.jammcards.fileprovider",
+                    mPhotoFile);
+            getActivity().revokeUriPermission(uri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            updatePhotoView();
+        }
     }
 
     @Override
@@ -66,6 +101,8 @@ public class CardFragment extends Fragment {
                 mCard.setShown(isChecked);
             }
         });
+
+        PackageManager packageManager = getActivity().getPackageManager();
 
         mCardText = (EditText) v.findViewById(R.id.card_text);
         mCardText.setText(mCard.getText());
@@ -86,6 +123,35 @@ public class CardFragment extends Fragment {
              }
          });
 
+        mPhotoButton = (ImageButton) v.findViewById(R.id.card_camera);
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        boolean canTakePhoto = mPhotoFile != null &&
+                captureImage.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = FileProvider.getUriForFile(getActivity(),
+                        "com.co.jammcards.jammcards.fileprovider",
+                        mPhotoFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                List<ResolveInfo> cameraActivities = getActivity()
+                        .getPackageManager().queryIntentActivities(captureImage,
+                                PackageManager.MATCH_DEFAULT_ONLY);
+
+                for (ResolveInfo activity : cameraActivities) {
+                    getActivity().grantUriPermission(activity.activityInfo.packageName,
+                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
+
+        mPhotoView = (ImageView) v.findViewById(R.id.card_image);
+        updatePhotoView();
 
         return v;
     }
@@ -112,6 +178,16 @@ public class CardFragment extends Fragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(
+                    mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
         }
     }
 }
