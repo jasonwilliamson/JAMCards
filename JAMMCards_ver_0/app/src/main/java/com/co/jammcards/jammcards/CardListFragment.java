@@ -136,6 +136,9 @@ public class CardListFragment extends Fragment {
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
+            case R.id.show_deck_quiz_stats:
+                Intent intent = DeckQuizStatsActivity.newIntent(getActivity());
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

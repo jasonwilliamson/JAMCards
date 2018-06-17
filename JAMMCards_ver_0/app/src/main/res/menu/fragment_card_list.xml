@@ -12,4 +12,9 @@
         android:title="@string/show_subtitle"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/show_deck_quiz_stats"
+        android:title="Show Quiz Stats"
+        />
+
 </menu>
