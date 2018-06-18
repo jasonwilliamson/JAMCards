@@ -91,7 +91,7 @@ public class CardListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_card:
+            case R.id.new_card: {
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 final EditText editText = new EditText(getActivity());
@@ -108,7 +108,7 @@ public class CardListFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String cardTitle = editText.getText().toString();
-                        if(!cardTitle.isEmpty()){
+                        if (!cardTitle.isEmpty()) {
                             Card card = new Card();
                             card.setTitle(cardTitle);
                             card.setDECK_uuid(mDeck.getId());
@@ -131,16 +131,24 @@ public class CardListFragment extends Fragment {
 
                 alert.show();
                 return true;
-            case R.id.show_subtitle:
+            }
+            case R.id.show_subtitle: {
                 mSubtitleVisible = !mSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
-            case R.id.show_deck_quiz_stats:
+            }
+            case R.id.show_deck_quiz_stats: {
                 Intent intent = DeckQuizStatsActivity.newIntent(getActivity());
                 startActivity(intent);
-            default:
+            }
+            case R.id.start_quiz: {
+                Intent intent = MainQuiz.newIntent(getActivity());
+                startActivity(intent);
+            }
+            default: {
                 return super.onOptionsItemSelected(item);
+            }
         }
     }
 
