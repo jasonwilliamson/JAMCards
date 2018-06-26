@@ -22,10 +22,10 @@
         </activity>
         <activity
             android:name=".CardListActivity"
-            android:parentActivityName=".DeckListActivity"></activity>
+            android:parentActivityName=".DeckListActivity" />
         <activity
             android:name=".CardPagerActivity"
-            android:parentActivityName=".CardPagerActivity"></activity>
+            android:parentActivityName=".CardPagerActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -37,7 +37,11 @@
                 android:resource="@xml/files" />
         </provider>
 
-        <activity android:name=".DeckQuizStatsActivity"></activity>
+        <activity android:name=".DeckQuizStatsActivity" />
+        <activity
+            android:name=".MainQuiz"
+            android:label="@string/title_activity_main_quiz"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

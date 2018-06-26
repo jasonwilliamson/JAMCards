@@ -8,4 +8,10 @@
     <string name="subtite_format">%1$d cards</string>
     <string name="delete_card">Delete Card</string>
     <string name="new_deck">New Deck</string>
+    <string name="title_activity_main_quiz">MainQuiz</string>
+    <string name="next_button">Next</string>
+    <string name="flip_button">Flip</string>
+    <string name="correct_button">Correct</string>
+    <string name="wrong_button">Wrong</string>
+    <string name="card_view_description">Card Image</string>
 </resources>
