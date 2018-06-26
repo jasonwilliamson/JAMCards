@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/new_card"
+        android:icon="@drawable/ic_menu_add"
+        android:title="@string/new_card"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/show_subtitle"
+        android:title="@string/show_subtitle"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/show_deck_quiz_stats"
+        android:title="Show Quiz Stats"
+        />
+
+    <item
+        android:id="@+id/start_quiz"
+        android:title="Quiz Now"
+        />
+
+</menu>
