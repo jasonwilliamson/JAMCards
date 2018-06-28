@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">JAMMCards</string>
+    <string name="card_text_hint">Enter text for the card</string>
+    <string name="card_show_label">Show</string>
+    <string name="new_card">New Card</string>
+    <string name="show_subtitle">Show Card Count</string>
+    <string name="hide_subtitle">Hide Card Count</string>
+    <string name="subtite_format">%1$d cards</string>
+    <string name="delete_card">Delete Card</string>
+    <string name="new_deck">New Deck</string>
+    <string name="title_activity_main_quiz">MainQuiz</string>
+    <string name="next_button">Next</string>
+    <string name="flip_button">Flip</string>
+    <string name="correct_button">Correct</string>
+    <string name="wrong_button">Wrong</string>
+    <string name="card_view_description">Card Image</string>
+</resources>
