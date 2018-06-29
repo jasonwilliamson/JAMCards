@@ -1,70 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="bottom"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/card_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="384dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/card_view_description"
-        app:srcCompat="@android:color/holo_orange_light">
-    </ImageView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/holo_orange_light"></ImageView>
 
     <TextView
         android:id="@+id/card_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="180dp"
         android:ems="10"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/card_view" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|end"
-        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/card_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:maxLength="3"
-            android:maxLines="1"
-            android:minLines="1" />
+    <Button
+        android:id="@+id/flip_button"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/flip_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wrong_button"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/flip_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/flip_button" />
+    <Button
+        android:id="@+id/wrong_button"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/wrong_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/correct_button" />
 
-        <Button
-            android:id="@+id/wrong_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/wrong_button" />
+    <Button
+        android:id="@+id/correct_button"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/correct_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next_button" />
 
-        <Button
-            android:id="@+id/correct_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/correct_button" />
+    <Button
+        android:id="@+id/next_button"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/next_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/next_button" />
 
-    </LinearLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

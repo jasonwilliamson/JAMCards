@@ -143,7 +143,10 @@ public class CardListFragment extends Fragment {
                 startActivity(intent);
             }
             case R.id.start_quiz: {
+                UUID deckId = (UUID) getActivity().getIntent()
+                        .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
                 Intent intent = MainQuiz.newIntent(getActivity());
+                intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
                 startActivity(intent);
             }
             default: {
