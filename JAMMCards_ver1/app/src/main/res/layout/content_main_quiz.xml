@@ -4,101 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="visible"
-    tools:layout_editor_absoluteY="81dp">
-
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/card_view"
         android:layout_width="0dp"
-        android:layout_height="590dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="384dp"
         android:adjustViewBounds="true"
-        android:background="@android:color/holo_blue_light"
         android:contentDescription="@string/card_view_description"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/holo_orange_light"></ImageView>
 
     <TextView
         android:id="@+id/card_text"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="180dp"
         android:ems="10"
-        android:textAlignment="center"
-        android:textSize="30sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="HELLO" />
+        app:layout_constraintTop_toTopOf="@+id/card_view" />
 
-    <TextView
-        android:id="@+id/card_number"
-        android:layout_width="137dp"
-        android:layout_height="71dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:maxLength="3"
-        android:maxLines="1"
-        android:minLines="1"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/flip_button"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/flip_button"
-        android:layout_width="wrap_content"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/flip_button"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wrong_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/wrong_button"
-        android:layout_width="94dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="3dp"
-        android:text="@string/wrong_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next_button"
-        app:layout_constraintStart_toEndOf="@+id/correct_button" />
-
-    <Button
-        android:id="@+id/correct_button"
-        android:layout_width="98dp"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
+        android:text="@string/wrong_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/correct_button" />
+
+    <Button
+        android:id="@+id/correct_button"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/correct_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/wrong_button"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/flip_button" />
+        app:layout_constraintEnd_toStartOf="@+id/next_button" />
 
     <Button
         android:id="@+id/next_button"
-        android:layout_width="89dp"
+        style="@android:style/Widget.Material.Button.Small"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/next_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/wrong_button" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
 
 public class MainQuiz extends AppCompatActivity {
 
@@ -18,7 +22,12 @@ public class MainQuiz extends AppCompatActivity {
     private boolean[] correct;
     private String[] questions;
     private String[] answers;
-    private ImageView card_image;
+    private ImageView cardImageView;
+    private TextView currectCardTextView;
+    private File cardImageFile;
+    private Deck mDeck;
+    private List<Card> mCards;
+    private Card mCard;
 
     public static Intent newIntent(Context packageContent) {
         Intent intent = new Intent(packageContent, MainQuiz.class);
@@ -45,9 +54,15 @@ public class MainQuiz extends AppCompatActivity {
             answers[i] = "Answer - " + Integer.toString(i+1);
         }
 
-        card_image = (ImageView) findViewById(R.id.card_view);
+        UUID deckId = (UUID) getIntent()
+                .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
+        mDeck = DeckLab.get(this).getDeck(deckId);
+        mCards = CardLab.get(this).getCards(deckId);
 
-        card_image.setOnTouchListener(new SwipeListener(MainQuiz.this) {
+        cardImageView = (ImageView) findViewById(R.id.card_view);
+        currectCardTextView = (TextView) findViewById(R.id.card_text);
+
+        cardImageView.setOnTouchListener(new SwipeListener(MainQuiz.this) {
             public void onSwipeTop() {
             }
             public void onSwipeRight() {
@@ -104,14 +119,25 @@ public class MainQuiz extends AppCompatActivity {
     }
 
     private void updateCurrentCard() {
-        final TextView currectCardNumberTextView = (TextView) findViewById(R.id.card_number);
-        currectCardNumberTextView.setText(Integer.toString(current_card));
-
-        final TextView currectCardTextView = (TextView) findViewById(R.id.card_text);
+        mCard = mCards.get(current_card);
+        if (mCard == null) return;
+        cardImageFile = CardLab.get(this).getPhotoFile(mCard);
+        updatePhotoView();
         if (answer) {
             currectCardTextView.setText(answers[current_card]);
         } else {
             currectCardTextView.setText(questions[current_card]);
+        }
+    }
+    private void updatePhotoView() {
+        if (cardImageFile == null || !cardImageFile.exists()) {
+            System.out.println("-|-NULL-|-");
+            cardImageView.setImageDrawable(null);
+        } else {
+            System.out.println("|-|" + cardImageFile.getPath() + "|-|");
+            Bitmap bitmap = PictureUtils.getScaledBitmap(
+                    cardImageFile.getPath(), this);
+            cardImageView.setImageBitmap(bitmap);
         }
     }
 }

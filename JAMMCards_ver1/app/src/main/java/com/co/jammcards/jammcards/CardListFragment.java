@@ -3,7 +3,6 @@ package com.co.jammcards.jammcards;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +28,6 @@ public class CardListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     private RecyclerView mCardRecyclerView;
-    private FloatingActionButton mFloatingActionButton;
     private CardAdapter mAdapter;
     private Deck mDeck;
     private boolean mSubtitleVisible;
@@ -56,33 +54,11 @@ public class CardListFragment extends Fragment {
                 .findViewById(R.id.card_recycler_view);
         mCardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mFloatingActionButton = (FloatingActionButton) view
-                .findViewById(R.id.floating_add_card_action_button);
-
         if(savedInstanceState != null){
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
 
         updateUI();
-
-        mCardRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0 && mFloatingActionButton.getVisibility() == View.VISIBLE) {
-                    mFloatingActionButton.hide();
-                }else if (dy < 0 && mFloatingActionButton.getVisibility() != View.VISIBLE) {
-                    mFloatingActionButton.show();
-                }
-            }
-        });
-
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddCardDialog();
-            }
-        });
 
         return view;
     }
@@ -112,52 +88,48 @@ public class CardListFragment extends Fragment {
         }
     }
 
-    public void showAddCardDialog(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        final EditText editText = new EditText(getActivity());
-
-        //Limit input size here...
-        InputFilter[] fa = new InputFilter[1];
-        fa[0] = new InputFilter.LengthFilter(20);
-        editText.setFilters(fa);
-
-        alert.setMessage("Enter Card Name (Required!)");
-        alert.setTitle("New Card");
-        alert.setView(editText);
-        alert.setPositiveButton("Add Card", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String cardTitle = editText.getText().toString();
-                if (!cardTitle.isEmpty()) {
-                    Card card = new Card();
-                    card.setTitle(cardTitle);
-                    card.setDECK_uuid(mDeck.getId());
-                    card.setShown(true);
-                    CardLab.get(getActivity()).addCard(card);
-
-                    Intent intent = CardPagerActivity
-                            .newIntent(getActivity(), card.getId());
-                    startActivity(intent);
-
-                }
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //nothing
-            }
-        });
-
-        alert.show();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_card: {
 
-                showAddCardDialog();
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                final EditText editText = new EditText(getActivity());
+
+                //Limit input size here...
+                InputFilter[] fa = new InputFilter[1];
+                fa[0] = new InputFilter.LengthFilter(20);
+                editText.setFilters(fa);
+
+                alert.setMessage("Enter Card Name (Required!");
+                alert.setTitle("New Card");
+                alert.setView(editText);
+                alert.setPositiveButton("Add Card", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String cardTitle = editText.getText().toString();
+                        if (!cardTitle.isEmpty()) {
+                            Card card = new Card();
+                            card.setTitle(cardTitle);
+                            card.setDECK_uuid(mDeck.getId());
+                            card.setShown(true);
+                            CardLab.get(getActivity()).addCard(card);
+
+                            Intent intent = CardPagerActivity
+                                    .newIntent(getActivity(), card.getId());
+                            startActivity(intent);
+
+                        }
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //nothing
+                    }
+                });
+
+                alert.show();
                 return true;
             }
             case R.id.show_subtitle: {
@@ -171,7 +143,10 @@ public class CardListFragment extends Fragment {
                 startActivity(intent);
             }
             case R.id.start_quiz: {
+                UUID deckId = (UUID) getActivity().getIntent()
+                        .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
                 Intent intent = MainQuiz.newIntent(getActivity());
+                intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
                 startActivity(intent);
             }
             default: {
@@ -209,7 +184,7 @@ public class CardListFragment extends Fragment {
     }
 
     private class CardHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener{
+            implements View.OnClickListener{
 
         private Card mCard;
         private TextView mTextView;
@@ -231,8 +206,8 @@ public class CardListFragment extends Fragment {
 
         @Override
         public void onClick(View view){
-           // Toast.makeText(getActivity(),
-           //         mCard.getText() + " clicked!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(),
+            //         mCard.getText() + " clicked!", Toast.LENGTH_SHORT).show();
 
             //Intent intent = new Intent(getActivity(), CardActivity.class);
 
