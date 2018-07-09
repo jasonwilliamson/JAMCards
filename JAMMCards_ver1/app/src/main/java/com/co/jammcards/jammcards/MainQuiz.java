@@ -15,19 +15,22 @@ import java.util.UUID;
 
 public class MainQuiz extends AppCompatActivity {
 
-    static int Max_Cards = 10;
+    int Max_Cards;
 
     private int current_card;
+    private int score;
     private boolean answer;
-    private boolean[] correct;
-    private String[] questions;
+    private boolean correct;
     private String[] answers;
     private ImageView cardImageView;
-    private TextView currectCardTextView;
+    private TextView currentCardTextView;
     private File cardImageFile;
     private Deck mDeck;
     private List<Card> mCards;
     private Card mCard;
+
+    public static final String QUIZ_RESULT_STRING =
+            "come.co.jammcards.jammcards.quiz_result_string";
 
     public static Intent newIntent(Context packageContent) {
         Intent intent = new Intent(packageContent, MainQuiz.class);
@@ -39,28 +42,23 @@ public class MainQuiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_quiz);
 
-        current_card = 0;
-        answer = false;
-        correct = new boolean[Max_Cards];
-        for (int i = 0; i < correct.length; i++) {
-            correct[i] = false;
-        }
-        questions = new String[Max_Cards];
-        for (int i = 0; i < questions.length; i++) {
-            questions[i] = "Question - " + Integer.toString(i+1);
-        }
-        answers = new String[Max_Cards];
-        for (int i = 0; i < answers.length; i++) {
-            answers[i] = "Answer - " + Integer.toString(i+1);
-        }
-
         UUID deckId = (UUID) getIntent()
                 .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
         mDeck = DeckLab.get(this).getDeck(deckId);
         mCards = CardLab.get(this).getCards(deckId);
 
         cardImageView = (ImageView) findViewById(R.id.card_view);
-        currectCardTextView = (TextView) findViewById(R.id.card_text);
+        currentCardTextView = (TextView) findViewById(R.id.card_text);
+
+        Max_Cards = mCards.size();
+        current_card = 0;
+        score = 0;
+        answer = false;
+        correct = false;
+        answers = new String[Max_Cards];
+        for (int i = 0; i < answers.length; i++) {
+            answers[i] = "Answer - " + Integer.toString(i+1);
+        }
 
         cardImageView.setOnTouchListener(new SwipeListener(MainQuiz.this) {
             public void onSwipeTop() {
@@ -84,11 +82,7 @@ public class MainQuiz extends AppCompatActivity {
         m_next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_card ++;
-                if (current_card >= Max_Cards) {
-                    current_card = 0;
-                }
-                updateCurrentCard();
+                nextCard();
             }
         });
 
@@ -105,7 +99,8 @@ public class MainQuiz extends AppCompatActivity {
         m_correct_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                correct[current_card] = true;
+                correct = true;
+                nextCard();
             }
         });
 
@@ -113,7 +108,8 @@ public class MainQuiz extends AppCompatActivity {
         m_wrong_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                correct[current_card] = false;
+                correct = false;
+                nextCard();
             }
         });
     }
@@ -124,20 +120,39 @@ public class MainQuiz extends AppCompatActivity {
         cardImageFile = CardLab.get(this).getPhotoFile(mCard);
         updatePhotoView();
         if (answer) {
-            currectCardTextView.setText(answers[current_card]);
+            currentCardTextView.setText(answers[current_card]);
         } else {
-            currectCardTextView.setText(questions[current_card]);
+            currentCardTextView.setText(mCard.getText());
         }
     }
     private void updatePhotoView() {
         if (cardImageFile == null || !cardImageFile.exists()) {
-            System.out.println("-|-NULL-|-");
             cardImageView.setImageDrawable(null);
         } else {
-            System.out.println("|-|" + cardImageFile.getPath() + "|-|");
             Bitmap bitmap = PictureUtils.getScaledBitmap(
                     cardImageFile.getPath(), this);
             cardImageView.setImageBitmap(bitmap);
         }
+    }
+
+    private void endQuiz() {
+        Intent intent = QuizResults.newIntent(this);
+        intent.putExtra(MainQuiz.QUIZ_RESULT_STRING, Integer.toString(score) + " / " + Integer.toString(Max_Cards));
+        startActivity(intent);
+        finish();
+    }
+
+    private void nextCard() {
+        current_card ++;
+        if (current_card >= Max_Cards) {
+            endQuiz();
+            return;
+        }
+        updateCurrentCard();
+        answer = false;
+        if (correct) {
+            score ++;
+        }
+        correct = false;
     }
 }

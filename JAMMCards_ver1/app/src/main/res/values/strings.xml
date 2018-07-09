@@ -14,4 +14,6 @@
     <string name="correct_button">Correct</string>
     <string name="wrong_button">Wrong</string>
     <string name="card_view_description">Card Image</string>
+    <string name="title_activity_quiz_results">QuizResults</string>
+    <string name="end_quiz">End Quiz</string>
 </resources>
