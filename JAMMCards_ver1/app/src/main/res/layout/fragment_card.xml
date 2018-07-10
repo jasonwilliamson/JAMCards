@@ -20,6 +20,16 @@
             android:scaleType="centerCrop"
             android:background="@android:color/darker_gray"/>
 
+        <com.co.jammcards.jammcards.DrawingView
+            android:id="@+id/drawing_image"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="0dp"
+            android:background="@null">
+
+        </com.co.jammcards.jammcards.DrawingView>
+
         <CheckBox
             android:id="@+id/card_show"
             android:layout_width="match_parent"

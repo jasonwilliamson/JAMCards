@@ -1,6 +1,10 @@
 package com.co.jammcards.jammcards;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.media.ThumbnailUtils;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,11 +39,16 @@ public class CardFragment extends Fragment {
 
     private Card mCard;
     private File mPhotoFile;
+    private File mDrawingFile;
     private Deck mCurrentDeck;
     private EditText mCardText;
     private CheckBox mShowCheckBox;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private DrawingView mDrawingView;
+    private ImageView mSave;
+
+
 
 
     public static CardFragment newInstance(UUID cardId) {
@@ -61,8 +70,11 @@ public class CardFragment extends Fragment {
         mCard = CardLab.get(getActivity()).getCard(cardId);
 
         mPhotoFile = CardLab.get(getActivity()).getPhotoFile(mCard);
+        mDrawingFile = CardLab.get(getActivity()).getPhotoFile(mCard);
 
         setHasOptionsMenu(true);
+
+
     }
 
     @Override
@@ -107,21 +119,21 @@ public class CardFragment extends Fragment {
         mCardText = (EditText) v.findViewById(R.id.card_text);
         mCardText.setText(mCard.getText());
         mCardText.addTextChangedListener(new TextWatcher() {
-             @Override
-             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-             }
+            }
 
-             @Override
-             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                 mCard.setText(s.toString());
-             }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mCard.setText(s.toString());
+            }
 
-             @Override
-             public void afterTextChanged(Editable s) {
+            @Override
+            public void afterTextChanged(Editable s) {
 
-             }
-         });
+            }
+        });
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.card_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -152,6 +164,10 @@ public class CardFragment extends Fragment {
 
         mPhotoView = (ImageView) v.findViewById(R.id.card_image);
         updatePhotoView();
+
+        mDrawingView = (DrawingView) v.findViewById(R.id.drawing_image);
+        //mSave = (ImageView) v.findViewById(R.id.drawing_image2);
+        //updateDrawingView();
 
         return v;
     }
@@ -189,5 +205,19 @@ public class CardFragment extends Fragment {
                     mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
         }
+
     }
+
+    private void updateDrawingView() {
+        View content = mDrawingView;
+        content.setDrawingCacheEnabled(true);
+        content.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        Bitmap bitmap = content.getDrawingCache();
+        mSave.setImageBitmap(bitmap);
+
+    }
+
+
+
+
 }
