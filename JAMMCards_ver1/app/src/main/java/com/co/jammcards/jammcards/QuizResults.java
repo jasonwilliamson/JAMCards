@@ -29,8 +29,21 @@ public class QuizResults extends AppCompatActivity {
             }
         });
 
+        Button m_stats_button = (Button) findViewById(R.id.view_deck_stats);
+        m_stats_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewStats();
+            }
+        });
+
         resultsTextView = (TextView) findViewById(R.id.quiz_results_text);
         resultsTextView.setText((String) getIntent().getSerializableExtra(MainQuiz.QUIZ_RESULT_STRING));
+    }
+
+    void viewStats() {
+        Intent intent = DeckQuizStatsActivity.newIntent(this);
+        startActivity(intent);
     }
 
 }

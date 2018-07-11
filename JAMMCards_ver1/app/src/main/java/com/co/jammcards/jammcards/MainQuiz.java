@@ -15,8 +15,8 @@ import java.util.UUID;
 
 public class MainQuiz extends AppCompatActivity {
 
-    int Max_Cards;
-
+    private int Max_Cards;
+    private int max_score;
     private int current_card;
     private int score;
     private boolean answer;
@@ -51,6 +51,7 @@ public class MainQuiz extends AppCompatActivity {
         currentCardTextView = (TextView) findViewById(R.id.card_text);
 
         Max_Cards = mCards.size();
+        max_score = Max_Cards;
         current_card = 0;
         score = 0;
         answer = false;
@@ -117,6 +118,11 @@ public class MainQuiz extends AppCompatActivity {
     private void updateCurrentCard() {
         mCard = mCards.get(current_card);
         if (mCard == null) return;
+        if (!mCard.isShown()) {
+            max_score --;
+            nextCard();
+            return;
+        }
         cardImageFile = CardLab.get(this).getPhotoFile(mCard);
         updatePhotoView();
         if (answer) {
@@ -137,22 +143,22 @@ public class MainQuiz extends AppCompatActivity {
 
     private void endQuiz() {
         Intent intent = QuizResults.newIntent(this);
-        intent.putExtra(MainQuiz.QUIZ_RESULT_STRING, Integer.toString(score) + " / " + Integer.toString(Max_Cards));
+        intent.putExtra(MainQuiz.QUIZ_RESULT_STRING, Integer.toString(score) + " / " + Integer.toString(max_score));
         startActivity(intent);
         finish();
     }
 
     private void nextCard() {
         current_card ++;
-        if (current_card >= Max_Cards) {
-            endQuiz();
-            return;
-        }
-        updateCurrentCard();
         answer = false;
         if (correct) {
             score ++;
         }
         correct = false;
+        if (current_card >= Max_Cards) {
+            endQuiz();
+            return;
+        }
+        updateCurrentCard();
     }
 }

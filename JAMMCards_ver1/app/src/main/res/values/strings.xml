@@ -16,4 +16,5 @@
     <string name="card_view_description">Card Image</string>
     <string name="title_activity_quiz_results">QuizResults</string>
     <string name="end_quiz">End Quiz</string>
+    <string name="view_quiz_stats">View Stats</string>
 </resources>
