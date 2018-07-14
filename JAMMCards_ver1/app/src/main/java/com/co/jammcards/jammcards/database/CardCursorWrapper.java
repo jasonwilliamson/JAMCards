@@ -17,6 +17,7 @@ public class CardCursorWrapper extends CursorWrapper {
         String uuidString = getString(getColumnIndex(CardTable.Cols.UUID));
         String title = getString(getColumnIndex(CardTable.Cols.TITLE));
         String text = getString(getColumnIndex(CardTable.Cols.TEXT));
+        String backText = getString(getColumnIndex(CardTable.Cols.BACK_TEXT));
         String deck_uuidString = getString(getColumnIndex(CardTable.Cols.DECK_UUID));
         int isShown = getInt(getColumnIndex(CardTable.Cols.SHOWN));
 
@@ -24,6 +25,7 @@ public class CardCursorWrapper extends CursorWrapper {
         card.setTitle(title);
         card.setDECK_uuid(UUID.fromString(deck_uuidString));
         card.setText(text);
+        card.setBackText(backText);
         card.setShown(isShown != 0);
         return card;
 

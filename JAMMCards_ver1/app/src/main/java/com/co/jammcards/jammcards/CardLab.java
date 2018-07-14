@@ -93,6 +93,11 @@ public class CardLab {
         return  new File(filesDir, card.getPhotoFilename());
     }
 
+    public File getBackPhotoFile(Card card) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, card.getBackPhotoFilename());
+    }
+
     public void updateCard(Card card) {
         String uuidString = card.getId().toString();
         ContentValues values = getContentValues(card);
@@ -121,6 +126,7 @@ public class CardLab {
         values.put(CardTable.Cols.UUID, card.getId().toString());
         values.put(CardTable.Cols.TITLE, card.getTitle());
         values.put(CardTable.Cols.TEXT, card.getText());
+        values.put(CardTable.Cols.BACK_TEXT, card.getText());
         values.put(CardTable.Cols.DECK_UUID, card.getDECK_uuid().toString());
         values.put(CardTable.Cols.SHOWN, card.isShown() ? 1 : 0 );
 

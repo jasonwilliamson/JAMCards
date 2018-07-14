@@ -37,7 +37,6 @@ public class DeckListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_deck_list, container, false);
-
         mDeckRecyclerView = (RecyclerView) view
                 .findViewById(R.id.deck_recycler_view);
         mDeckRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

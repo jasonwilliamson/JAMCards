@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -34,11 +36,13 @@ import java.util.UUID;
 
 public class CardFragment extends Fragment {
 
+    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
     private static final String ARG_CARD_ID = "card_id";
     private static final int REQUEST_PHOTO = 0;
 
     private Card mCard;
     private File mPhotoFile;
+    private File mBackPhotoFile;
     private File mDrawingFile;
     private Deck mCurrentDeck;
     private EditText mCardText;
@@ -47,8 +51,8 @@ public class CardFragment extends Fragment {
     private ImageView mPhotoView;
     private DrawingView mDrawingView;
     private ImageView mSave;
-
-
+    private FloatingActionButton mFloatingActionButton;
+    private boolean mIsFrontView;
 
 
     public static CardFragment newInstance(UUID cardId) {
@@ -70,8 +74,10 @@ public class CardFragment extends Fragment {
         mCard = CardLab.get(getActivity()).getCard(cardId);
 
         mPhotoFile = CardLab.get(getActivity()).getPhotoFile(mCard);
+        mBackPhotoFile = CardLab.get(getActivity()).getBackPhotoFile(mCard);
         mDrawingFile = CardLab.get(getActivity()).getPhotoFile(mCard);
 
+        //((CardPagerActivity) getActivity()).setSubTitile("Showing front");
         setHasOptionsMenu(true);
 
 
@@ -91,9 +97,17 @@ public class CardFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_PHOTO){
-            Uri uri = FileProvider.getUriForFile(getActivity(),
-                    "com.co.jammcards.jammcards.fileprovider",
-                    mPhotoFile);
+            Uri uri = null;
+            if(mIsFrontView){
+                uri = FileProvider.getUriForFile(getActivity(),
+                        "com.co.jammcards.jammcards.fileprovider",
+                        mPhotoFile);
+            }else{
+                uri = FileProvider.getUriForFile(getActivity(),
+                        "com.co.jammcards.jammcards.fileprovider",
+                        mBackPhotoFile);
+            }
+
             getActivity().revokeUriPermission(uri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView();
@@ -135,6 +149,15 @@ public class CardFragment extends Fragment {
             }
         });
 
+        mFloatingActionButton = (FloatingActionButton)
+                v.findViewById(R.id.floating_flip_card_action_button);
+
+        mIsFrontView = true;
+        if(savedInstanceState != null){
+            mIsFrontView = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+        }
+        updateSubtitle();
+
         mPhotoButton = (ImageButton) v.findViewById(R.id.card_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         boolean canTakePhoto = mPhotoFile != null &&
@@ -144,10 +167,18 @@ public class CardFragment extends Fragment {
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "com.co.jammcards.jammcards.fileprovider",
-                        mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                Uri uri = null;
+                if(mIsFrontView) {
+                    uri = FileProvider.getUriForFile(getActivity(),
+                            "com.co.jammcards.jammcards.fileprovider",
+                            mPhotoFile);
+                    captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                }else{
+                    uri = FileProvider.getUriForFile(getActivity(),
+                            "com.co.jammcards.jammcards.fileprovider",
+                            mBackPhotoFile);
+                    captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                }
 
                 List<ResolveInfo> cameraActivities = getActivity()
                         .getPackageManager().queryIntentActivities(captureImage,
@@ -173,9 +204,23 @@ public class CardFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mIsFrontView);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_card, menu);
+
+        MenuItem subtitleItem = menu.findItem(R.id.card_subtitle);
+        if(mIsFrontView){
+            subtitleItem.setTitle(R.string.front_subtitle);
+        }else{
+            subtitleItem.setTitle(R.string.back_subtitle);
+        }
+
     }
 
     @Override
@@ -192,20 +237,51 @@ public class CardFragment extends Fragment {
                         .newIntent(getActivity(), mCurrentDeck.getId());
                 startActivity(intent);*/
                 return true;
+
+            case R.id.card_subtitle: {
+                mIsFrontView = !mIsFrontView;
+                getActivity().invalidateOptionsMenu();;
+                updateSubtitle();
+                updatePhotoView();
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void updatePhotoView() {
-        if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
-        } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(
-                    mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
+    private void updateSubtitle() {
+
+        String subtitle = "Front View";
+        if(mIsFrontView){
+            subtitle = "Front View";
+        }else{
+            subtitle = "Back View";
         }
 
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setSubtitle(subtitle);
+    }
+
+    private void updatePhotoView() {
+
+        if(mIsFrontView){
+            if (mPhotoFile == null || !mPhotoFile.exists()) {
+                mPhotoView.setImageDrawable(null);
+            } else {
+                Bitmap bitmap = PictureUtils.getScaledBitmap(
+                        mPhotoFile.getPath(), getActivity());
+                mPhotoView.setImageBitmap(bitmap);
+            }
+        }else{
+            if (mBackPhotoFile == null || !mBackPhotoFile.exists()) {
+                mPhotoView.setImageDrawable(null);
+            } else {
+                Bitmap bitmap = PictureUtils.getScaledBitmap(
+                        mBackPhotoFile.getPath(), getActivity());
+                mPhotoView.setImageBitmap(bitmap);
+            }
+        }
     }
 
     private void updateDrawingView() {

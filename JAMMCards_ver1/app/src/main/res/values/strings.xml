@@ -5,6 +5,8 @@
     <string name="new_card">New Card</string>
     <string name="show_subtitle">Show Card Count</string>
     <string name="hide_subtitle">Hide Card Count</string>
+    <string name="front_subtitle">Flip to Back</string>
+    <string name="back_subtitle">Flip to Front</string>
     <string name="subtite_format">%1$d cards</string>
     <string name="delete_card">Delete Card</string>
     <string name="new_deck">New Deck</string>

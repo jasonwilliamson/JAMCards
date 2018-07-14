@@ -20,6 +20,7 @@ public class JAMMCardsBaseHelper extends SQLiteOpenHelper {
             CardTable.Cols.DECK_UUID + ", " +
             CardTable.Cols.TITLE + ", " +
             CardTable.Cols.TEXT + ", " +
+            CardTable.Cols.BACK_TEXT + ", " +
             CardTable.Cols.SHOWN + ")";
 
     // Deck table create statement

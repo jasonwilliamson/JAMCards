@@ -7,6 +7,7 @@ public class Card {
     private UUID mId;
     private String mTitle;
     private String mText;
+    private String mBackText;
     private boolean mIsShown;
     private UUID mDECK_uuid;
 
@@ -43,6 +44,10 @@ public class Card {
         mText = text;
     }
 
+    public String getBackText() {return mBackText;}
+
+    public void setBackText(String text) { mBackText = text; }
+
     public boolean isShown() {
         return mIsShown;
     }
@@ -61,5 +66,9 @@ public class Card {
 
     public String getPhotoFilename() {
         return "IMG_" + getId().toString() + ".jpg";
+    }
+
+    public String getBackPhotoFilename() {
+        return "BACK_IMG_" + getId().toString() + ".jpg";
     }
 }

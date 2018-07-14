@@ -7,4 +7,14 @@
         android:title="@string/delete_card"
         app:showAsAction="ifRoom|withText"/>
 
+    <item
+        android:id="@+id/card_subtitle"
+        android:title="Flip to Back"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/back_subtitle"
+        android:title="@string/back_subtitle"
+        app:showAsAction="ifRoom" />
+
 </menu>

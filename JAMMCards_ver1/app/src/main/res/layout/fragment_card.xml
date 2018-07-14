@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -30,9 +31,19 @@
 
         </com.co.jammcards.jammcards.DrawingView>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_flip_card_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/card_show"
+            android:layout_marginEnd="29dp"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
         <CheckBox
             android:id="@+id/card_show"
-            android:layout_width="match_parent"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/card_camera"
             android:layout_alignParentStart="true"
