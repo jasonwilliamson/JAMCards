@@ -129,6 +129,7 @@ public class CardListFragment extends Fragment {
             case R.id.show_deck_quiz_stats: {
                 Intent intent = DeckQuizStatsActivity.newIntent(getActivity());
                 startActivity(intent);
+                return true;
             }
             case R.id.start_quiz: {
                 UUID deckId = (UUID) getActivity().getIntent()
@@ -136,6 +137,7 @@ public class CardListFragment extends Fragment {
                 Intent intent = MainQuiz.newIntent(getActivity());
                 intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
                 startActivity(intent);
+                return true;
             }
             default: {
                 return super.onOptionsItemSelected(item);

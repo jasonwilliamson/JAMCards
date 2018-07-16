@@ -8,6 +8,8 @@ public class Card {
     private String mTitle;
     private String mText;
     private String mBackText;
+    private int mCorrectCount;
+    private int mTotalCount;
     private boolean mIsShown;
     private UUID mDECK_uuid;
 
@@ -70,5 +72,21 @@ public class Card {
 
     public String getBackPhotoFilename() {
         return "BACK_IMG_" + getId().toString() + ".jpg";
+    }
+
+    public int getCorrectCount() {
+        return mCorrectCount;
+    }
+
+    public void setCorrectCount(int correct) {
+        mCorrectCount = correct;
+    }
+
+    public int getTotalCount() {
+        return mTotalCount;
+    }
+
+    public void setTotalCount(int total) {
+        mTotalCount = total;
     }
 }

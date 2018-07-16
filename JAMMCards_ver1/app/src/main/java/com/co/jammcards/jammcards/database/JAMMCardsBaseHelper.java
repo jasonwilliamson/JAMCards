@@ -21,12 +21,19 @@ public class JAMMCardsBaseHelper extends SQLiteOpenHelper {
             CardTable.Cols.TITLE + ", " +
             CardTable.Cols.TEXT + ", " +
             CardTable.Cols.BACK_TEXT + ", " +
+            CardTable.Cols.CORRECT_COUNT + ", " +
+            CardTable.Cols.TOTAL_COUNT + ", " +
             CardTable.Cols.SHOWN + ")";
 
     // Deck table create statement
     private static final String create_table_decks = "create table " + DeckTable.NAME + "(" +
             " _id integer primary key autoincrement, " +
             DeckTable.Cols.UUID + ", " +
+            DeckTable.Cols.CATEGORY_A + ", " +
+            DeckTable.Cols.CATEGORY_B + ", " +
+            DeckTable.Cols.CATEGORY_C + ", " +
+            DeckTable.Cols.CATEGORY_D + ", " +
+            DeckTable.Cols.CATEGORY_F + ", " +
             DeckTable.Cols.TITLE + ")";
 
     public JAMMCardsBaseHelper(Context context) {

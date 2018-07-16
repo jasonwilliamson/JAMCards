@@ -14,6 +14,11 @@ public class Deck {
 
     private UUID mId;
     private String mTitle;
+    private int mCategoryA;
+    private int mCategoryB;
+    private int mCategoryC;
+    private int mCategoryD;
+    private int mCategoryF;
     private List<Card> mCards;
 
     public Deck() {
@@ -39,6 +44,46 @@ public class Deck {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public int getCategoryA() {
+        return mCategoryA;
+    }
+
+    public void setCategoryA(int categoryA) {
+        mCategoryA = categoryA;
+    }
+
+    public int getCategoryB() {
+        return mCategoryB;
+    }
+
+    public void setCategoryB(int categoryB) {
+        mCategoryB = categoryB;
+    }
+
+    public int getCategoryC() {
+        return mCategoryC;
+    }
+
+    public void setCategoryC(int categoryC) {
+        mCategoryC = categoryC;
+    }
+
+    public int getCategoryD() {
+        return mCategoryD;
+    }
+
+    public void setCategoryD(int categoryD) {
+        mCategoryD = categoryD;
+    }
+
+    public int getCategoryF() {
+        return mCategoryF;
+    }
+
+    public void setCategoryF(int categoryF) {
+        mCategoryF = categoryF;
     }
 
    // public void createCards(){
