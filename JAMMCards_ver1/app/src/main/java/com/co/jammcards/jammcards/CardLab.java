@@ -129,6 +129,8 @@ public class CardLab {
         values.put(CardTable.Cols.BACK_TEXT, card.getBackText());
         values.put(CardTable.Cols.DECK_UUID, card.getDECK_uuid().toString());
         values.put(CardTable.Cols.SHOWN, card.isShown() ? 1 : 0 );
+        values.put(CardTable.Cols.CORRECT_COUNT, card.getCorrectCount());
+        values.put(CardTable.Cols.TOTAL_COUNT, card.getTotalCount());
 
         return values;
     }

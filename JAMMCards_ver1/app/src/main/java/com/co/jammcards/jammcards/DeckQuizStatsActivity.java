@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -46,6 +47,7 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
         // mDeck.setCategoryA(mDeck.getCategoryA() + 1);
 
         createPieChart();
+        setCardStats();
         //createCardStatList();
     }
 
@@ -61,27 +63,30 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
         String minCorrectTitle = "";
 
         for (int i = 0; i < mCards.size(); ++i) {
-            float correctRatio = mCards.get(i).getTotalCount() > 0 ? ((float)mCards.get(i).getCorrectCount()/(float)mCards.get(i).getTotalCount())*100 : 0;
-            //cardStats.add(mCards.get(i).getTitle() + String.valueOf(correctRatio));
+            if (mCards.get(i).getTotalCount() > 0) {
+                float correctRatio =  ((float) mCards.get(i).getCorrectCount() / (float) mCards.get(i).getTotalCount()) * 100;
 
-            if (correctRatio >= maxCorrectRatio) {
-                maxCorrectRatio = correctRatio;
-                maxCorrectTitle = mCards.get(i).getTitle();
-            }
+                if (correctRatio >= maxCorrectRatio && mCards.get(i).isShown()) {
+                    maxCorrectRatio = correctRatio;
+                    maxCorrectTitle = mCards.get(i).getTitle();
+                }
 
-            if (correctRatio <= minCorrectRatio) {
-                minCorrectRatio = correctRatio;
-                minCorrectTitle = mCards.get(i).getTitle();
+                if (correctRatio <= minCorrectRatio && mCards.get(i).isShown()) {
+                    minCorrectRatio = correctRatio;
+                    minCorrectTitle = mCards.get(i).getTitle();
+                }
             }
         }
 
         if (maxCorrectTitle != "")
         {
-
+            TextView maxCorrectView = (TextView) findViewById(R.id.best_card_text);
+            maxCorrectView.setText("Most correctly answered card: " + maxCorrectTitle + " - " + maxCorrectRatio + "%");
         }
         if (minCorrectTitle != "")
         {
-
+            TextView minCorrectView = (TextView) findViewById(R.id.worst_card_text);
+            minCorrectView.setText("Least correctly answered card: " + minCorrectTitle + " - " + minCorrectRatio + "%");
         }
     }
 

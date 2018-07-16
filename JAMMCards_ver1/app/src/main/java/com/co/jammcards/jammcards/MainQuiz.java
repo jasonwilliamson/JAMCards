@@ -104,6 +104,8 @@ public class MainQuiz extends AppCompatActivity {
             public void onClick(View v) {
                 correct = true;
                 mCard.setCorrectCount(mCard.getCorrectCount() + 1);
+                mCard.setTotalCount(mCard.getTotalCount() + 1);
+                CardLab.get(MainQuiz.this).updateCard(mCard);
                 nextCard();
             }
         });
@@ -114,6 +116,7 @@ public class MainQuiz extends AppCompatActivity {
             public void onClick(View v) {
                 correct = false;
                 mCard.setTotalCount(mCard.getTotalCount() + 1);
+                CardLab.get(MainQuiz.this).updateCard(mCard);
                 nextCard();
             }
         });
