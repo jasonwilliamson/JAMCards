@@ -130,8 +130,18 @@ public class CardFragment extends Fragment {
 
         PackageManager packageManager = getActivity().getPackageManager();
 
+        mIsFrontView = true;
+        if(savedInstanceState != null){
+            mIsFrontView = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+        }
+        updateSubtitle();
+
         mCardText = (EditText) v.findViewById(R.id.card_text);
-        mCardText.setText(mCard.getText());
+        if(mIsFrontView) {
+            mCardText.setText(mCard.getText());
+        }else{
+            mCardText.setText(mCard.getBackText());
+        }
         mCardText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,7 +150,11 @@ public class CardFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mCard.setText(s.toString());
+                if(mIsFrontView) {
+                    mCard.setText(s.toString());
+                }else{
+                    mCard.setBackText(s.toString());
+                }
             }
 
             @Override
@@ -152,11 +166,6 @@ public class CardFragment extends Fragment {
         mFloatingActionButton = (FloatingActionButton)
                 v.findViewById(R.id.floating_flip_card_action_button);
 
-        mIsFrontView = true;
-        if(savedInstanceState != null){
-            mIsFrontView = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
-        }
-        updateSubtitle();
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.card_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -243,10 +252,20 @@ public class CardFragment extends Fragment {
                 getActivity().invalidateOptionsMenu();;
                 updateSubtitle();
                 updatePhotoView();
+                updateCardText();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateCardText() {
+
+        if(mIsFrontView) {
+            mCardText.setText(mCard.getText());
+        }else{
+            mCardText.setText(mCard.getBackText());
         }
     }
 

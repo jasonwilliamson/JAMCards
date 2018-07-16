@@ -127,7 +127,10 @@ public class CardListFragment extends Fragment {
                 return true;
             }
             case R.id.show_deck_quiz_stats: {
+                UUID deckId = (UUID) getActivity().getIntent()
+                        .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
                 Intent intent = DeckQuizStatsActivity.newIntent(getActivity());
+                intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
                 startActivity(intent);
                 return true;
             }
