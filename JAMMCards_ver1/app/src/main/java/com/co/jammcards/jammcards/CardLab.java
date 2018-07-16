@@ -126,7 +126,7 @@ public class CardLab {
         values.put(CardTable.Cols.UUID, card.getId().toString());
         values.put(CardTable.Cols.TITLE, card.getTitle());
         values.put(CardTable.Cols.TEXT, card.getText());
-        values.put(CardTable.Cols.BACK_TEXT, card.getText());
+        values.put(CardTable.Cols.BACK_TEXT, card.getBackText());
         values.put(CardTable.Cols.DECK_UUID, card.getDECK_uuid().toString());
         values.put(CardTable.Cols.SHOWN, card.isShown() ? 1 : 0 );
 
