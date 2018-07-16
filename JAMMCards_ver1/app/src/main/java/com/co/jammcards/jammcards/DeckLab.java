@@ -133,6 +133,12 @@ public class DeckLab {
         ContentValues values = new ContentValues();
         values.put(DeckTable.Cols.UUID, deck.getId().toString());
         values.put(DeckTable.Cols.TITLE, deck.getTitle());
+        values.put(DeckTable.Cols.CATEGORY_A, deck.getCategoryA());
+        values.put(DeckTable.Cols.CATEGORY_B, deck.getCategoryB());
+        values.put(DeckTable.Cols.CATEGORY_C, deck.getCategoryC());
+        values.put(DeckTable.Cols.CATEGORY_D, deck.getCategoryD());
+        values.put(DeckTable.Cols.CATEGORY_F, deck.getCategoryF());
+
         return values;
     }
 }

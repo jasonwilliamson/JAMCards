@@ -49,20 +49,25 @@ public class QuizResults extends AppCompatActivity {
         Deck deck = DeckLab.get(this).getDeck(deckId);
         float percent = ((float) score) / ((float) max_score);
         if (percent >= 0.80) {
-            deck.setCategoryA(deck.getCategoryA());
+            deck.setCategoryA(deck.getCategoryA() + 1);
         } else if (percent >= 0.70) {
-            deck.setCategoryB(deck.getCategoryB());
+            deck.setCategoryB(deck.getCategoryB() + 1);
         } else if (percent >= 0.60) {
-            deck.setCategoryC(deck.getCategoryC());
+            deck.setCategoryC(deck.getCategoryC() + 1);
         } else if (percent >= 0.50) {
-            deck.setCategoryD(deck.getCategoryD());
+            deck.setCategoryD(deck.getCategoryD() + 1);
         } else {
-            deck.setCategoryF(deck.getCategoryF());
+            deck.setCategoryF(deck.getCategoryF() + 1);
         }
+
+        DeckLab.get(this).updateDeck(deck);
     }
 
     void viewStats() {
+        UUID deckId = (UUID) getIntent()
+                .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
         Intent intent = DeckQuizStatsActivity.newIntent(this);
+        intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
         startActivity(intent);
     }
 

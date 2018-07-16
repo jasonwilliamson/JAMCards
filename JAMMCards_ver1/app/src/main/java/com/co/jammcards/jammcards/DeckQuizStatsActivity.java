@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -20,9 +23,11 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
     private PieChart pieChart;
     private Deck mDeck;
     private List<Card> mCards;
+    private static Context context;
 
     public static Intent newIntent(Context packageContent) {
         Intent intent = new Intent(packageContent, DeckQuizStatsActivity.class);
+        context = packageContent;
         return intent;
     }
 
@@ -37,19 +42,47 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
         mDeck = DeckLab.get(this).getDeck(deckId);
         mCards = CardLab.get(this).getCards(deckId);
 
-        // remove this later
-        //initDummyChartData();
+        // remove this
+        // mDeck.setCategoryA(mDeck.getCategoryA() + 1);
 
         createPieChart();
+        //createCardStatList();
     }
 
-    private void initDummyChartData()
+    private void setCardStats()
     {
-        mDeck.setCategoryA(6);
-        mDeck.setCategoryB(9);
-        mDeck.setCategoryC(3);
-        mDeck.setCategoryD(0);
-        mDeck.setCategoryF(0);
+        // get list of values to display from cards
+        List<String> cardStats = new ArrayList<String>();
+
+        float maxCorrectRatio = 0;
+        String maxCorrectTitle = "";
+
+        float minCorrectRatio = 100;
+        String minCorrectTitle = "";
+
+        for (int i = 0; i < mCards.size(); ++i) {
+            float correctRatio = mCards.get(i).getTotalCount() > 0 ? ((float)mCards.get(i).getCorrectCount()/(float)mCards.get(i).getTotalCount())*100 : 0;
+            //cardStats.add(mCards.get(i).getTitle() + String.valueOf(correctRatio));
+
+            if (correctRatio >= maxCorrectRatio) {
+                maxCorrectRatio = correctRatio;
+                maxCorrectTitle = mCards.get(i).getTitle();
+            }
+
+            if (correctRatio <= minCorrectRatio) {
+                minCorrectRatio = correctRatio;
+                minCorrectTitle = mCards.get(i).getTitle();
+            }
+        }
+
+        if (maxCorrectTitle != "")
+        {
+
+        }
+        if (minCorrectTitle != "")
+        {
+
+        }
     }
 
     private void createPieChart()
@@ -62,6 +95,7 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
             pieChart = findViewById(R.id.quizPieChart);
             pieChart.setRotationEnabled(true);
             pieChart.setHoleRadius(0f);
+            pieChart.setTransparentCircleRadius(0f);
             pieChart.setDrawEntryLabels(true);
             pieChart.setEntryLabelTextSize(15);
             pieChart.setEntryLabelColor(Color.BLACK);
@@ -73,45 +107,44 @@ public class DeckQuizStatsActivity extends AppCompatActivity {
 
 
             // A range
-            float aRuns = ((float)mDeck.getCategoryA()/totalQuizRuns) * 100;
-            pieSlices.add(new PieEntry(aRuns, "80-100% Correct", mDeck.getCategoryA()));
-            if (aRuns > 0) {
+            if (mDeck.getCategoryA() > 0) {
+                float aRuns = ((float)mDeck.getCategoryA()/totalQuizRuns) * 100;
+                pieSlices.add(new PieEntry(aRuns, "80-100% Correct", mDeck.getCategoryA()));
                 pieLabels.add("80-100% Correct");
+                colors.add(Color.GREEN);
             }
 
             // B range
-            float bRuns = ((float)mDeck.getCategoryB()/totalQuizRuns) * 100;
-            pieSlices.add(new PieEntry(bRuns, "70-79% Correct", mDeck.getCategoryB()));
-            if (bRuns > 0) {
+            if (mDeck.getCategoryB() > 0) {
+                float bRuns = ((float)mDeck.getCategoryB()/totalQuizRuns) * 100;
+                pieSlices.add(new PieEntry(bRuns, "70-79% Correct", mDeck.getCategoryB()));
                 pieLabels.add("70-79% Correct");
+                colors.add(Color.CYAN);
             }
 
             // C range
-            float cRuns = ((float)mDeck.getCategoryC()/totalQuizRuns) * 100;
-            pieSlices.add(new PieEntry(cRuns, "60-69% Correct", mDeck.getCategoryC()));
-            if (cRuns > 0) {
+            if (mDeck.getCategoryC() > 0) {
+                float cRuns = ((float)mDeck.getCategoryC()/totalQuizRuns) * 100;
+                pieSlices.add(new PieEntry(cRuns, "60-69% Correct", mDeck.getCategoryC()));
                 pieLabels.add("60-69% Correct");
+                colors.add(Color.YELLOW);
             }
 
             // D range
-            float dRuns = ((float)mDeck.getCategoryD()/totalQuizRuns) * 100;
-            pieSlices.add(new PieEntry(dRuns, "50-59% Correct", mDeck.getCategoryD()));
-            if (dRuns > 0) {
+            if (mDeck.getCategoryD() > 0) {
+                float dRuns = ((float)mDeck.getCategoryD()/totalQuizRuns) * 100;
+                pieSlices.add(new PieEntry(dRuns, "50-59% Correct", mDeck.getCategoryD()));
                 pieLabels.add("50-59% Correct");
+                colors.add(Color.MAGENTA);
             }
 
             // F range
-            float fRuns = ((float)mDeck.getCategoryF()/totalQuizRuns) * 100;
-            pieSlices.add(new PieEntry(fRuns, "<50% Correct", mDeck.getCategoryF()));
-            if (fRuns > 0) {
+            if (mDeck.getCategoryF() > 0) {
+                float fRuns = ((float)mDeck.getCategoryF()/totalQuizRuns) * 100;
+                pieSlices.add(new PieEntry(fRuns, "<50% Correct", mDeck.getCategoryF()));
                 pieLabels.add("<50% Correct");
+                colors.add(Color.RED);
             }
-
-            colors.add(Color.GREEN);
-            colors.add(Color.BLUE);
-            colors.add(Color.YELLOW);
-            colors.add(Color.MAGENTA);
-            colors.add(Color.RED);
 
             PieDataSet quizDataSet = new PieDataSet(pieSlices, "Quiz Grades");
             quizDataSet.setColors(colors);
