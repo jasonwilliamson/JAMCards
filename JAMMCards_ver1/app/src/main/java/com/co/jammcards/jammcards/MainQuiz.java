@@ -29,8 +29,10 @@ public class MainQuiz extends AppCompatActivity {
     private List<Card> mCards;
     private Card mCard;
 
-    public static final String QUIZ_RESULT_STRING =
-            "come.co.jammcards.jammcards.quiz_result_string";
+    public static final String QUIZ_RESULT_CORRECT =
+            "come.co.jammcards.jammcards.quiz_result_correct";
+    public static final String QUIZ_RESULT_TOTAL =
+            "come.co.jammcards.jammcards.quiz_result_total";
 
     public static Intent newIntent(Context packageContent) {
         Intent intent = new Intent(packageContent, MainQuiz.class);
@@ -101,6 +103,7 @@ public class MainQuiz extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 correct = true;
+                mCard.setCorrectCount(mCard.getCorrectCount() + 1);
                 nextCard();
             }
         });
@@ -110,6 +113,7 @@ public class MainQuiz extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 correct = false;
+                mCard.setTotalCount(mCard.getTotalCount() + 1);
                 nextCard();
             }
         });
@@ -142,8 +146,12 @@ public class MainQuiz extends AppCompatActivity {
     }
 
     private void endQuiz() {
+        UUID deckId = (UUID) getIntent()
+                .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
         Intent intent = QuizResults.newIntent(this);
-        intent.putExtra(MainQuiz.QUIZ_RESULT_STRING, Integer.toString(score) + " / " + Integer.toString(max_score));
+        intent.putExtra(MainQuiz.QUIZ_RESULT_CORRECT, score);
+        intent.putExtra(MainQuiz.QUIZ_RESULT_TOTAL, max_score);
+        intent.putExtra(CardListActivity.EXTRA_DECK_ID, deckId);
         startActivity(intent);
         finish();
     }

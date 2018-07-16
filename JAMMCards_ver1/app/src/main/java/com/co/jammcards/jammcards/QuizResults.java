@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.UUID;
+
 public class QuizResults extends AppCompatActivity {
     private TextView resultsTextView;
 
@@ -38,7 +40,25 @@ public class QuizResults extends AppCompatActivity {
         });
 
         resultsTextView = (TextView) findViewById(R.id.quiz_results_text);
-        resultsTextView.setText((String) getIntent().getSerializableExtra(MainQuiz.QUIZ_RESULT_STRING));
+        int score = getIntent().getIntExtra(MainQuiz.QUIZ_RESULT_CORRECT, 0);
+        int max_score = getIntent().getIntExtra(MainQuiz.QUIZ_RESULT_TOTAL, score);
+        resultsTextView.setText((String)(Integer.toString(score) + " / " + Integer.toString(max_score)));
+
+        UUID deckId = (UUID) getIntent()
+                .getSerializableExtra(CardListActivity.EXTRA_DECK_ID);
+        Deck deck = DeckLab.get(this).getDeck(deckId);
+        float percent = ((float) score) / ((float) max_score);
+        if (percent >= 0.80) {
+            deck.setCategoryA(deck.getCategoryA());
+        } else if (percent >= 0.70) {
+            deck.setCategoryB(deck.getCategoryB());
+        } else if (percent >= 0.60) {
+            deck.setCategoryC(deck.getCategoryC());
+        } else if (percent >= 0.50) {
+            deck.setCategoryD(deck.getCategoryD());
+        } else {
+            deck.setCategoryF(deck.getCategoryF());
+        }
     }
 
     void viewStats() {
