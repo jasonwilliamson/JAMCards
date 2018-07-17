@@ -1,6 +1,7 @@
 package com.co.jammcards.jammcards;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
@@ -15,8 +16,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -236,12 +239,8 @@ public class CardFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.delete_card:  //TODO implement delete card!!
-                CardLab.get(getActivity()).deleteCard(mCard);
-                Intent intent = CardListActivity
-                        .newIntent(getActivity(), mCurrentDeck.getId());
-                startActivity(intent);
-
-                /*mCurrentDeck.deleteCard(mCard);
+                showDeleteCardDialog();
+                /*CardLab.get(getActivity()).deleteCard(mCard);
                 Intent intent = CardListActivity
                         .newIntent(getActivity(), mCurrentDeck.getId());
                 startActivity(intent);*/
@@ -258,6 +257,36 @@ public class CardFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showDeleteCardDialog(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        CardLab.get(getActivity()).deleteCard(mCard);
+                        Intent intent = CardListActivity
+                                .newIntent(getActivity(), mCurrentDeck.getId());
+                        startActivity(intent);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage("This action will delete the current card. Continue?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+        alert.setTitle("Delete Card");
+
+
     }
 
     private void updateCardText() {
