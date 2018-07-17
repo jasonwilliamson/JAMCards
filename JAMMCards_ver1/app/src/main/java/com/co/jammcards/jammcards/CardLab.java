@@ -4,12 +4,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.co.jammcards.jammcards.database.CardCursorWrapper;
 import com.co.jammcards.jammcards.database.JAMMCardsDbSchema.CardTable;
 import com.co.jammcards.jammcards.database.JAMMCardsBaseHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +97,38 @@ public class CardLab {
     public File getPhotoFile(Card card) {
         File filesDir = mContext.getFilesDir();
         return  new File(filesDir, card.getPhotoFilename());
+    }
+
+    public void saveBitmap(Card card, Bitmap bm){
+        File filesDir = mContext.getFilesDir();
+        File newFile =  new File(filesDir, card.getPhotoFilename());
+        Log.d("CardLab", "saveBitmap");
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveBackBitmap(Card card, Bitmap bm){
+        File filesDir = mContext.getFilesDir();
+        File newFile =  new File(filesDir, card.getBackPhotoFilename());
+        Log.d("CardLab", "saveBitmap");
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public File getBackPhotoFile(Card card) {

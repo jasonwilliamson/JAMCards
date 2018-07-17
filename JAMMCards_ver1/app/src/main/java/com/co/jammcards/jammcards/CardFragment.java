@@ -1,7 +1,9 @@
 package com.co.jammcards.jammcards;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
@@ -21,10 +23,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -36,6 +40,8 @@ import android.widget.ImageView;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+import static android.graphics.Bitmap.createBitmap;
 
 public class CardFragment extends Fragment {
 
@@ -56,6 +62,10 @@ public class CardFragment extends Fragment {
     private ImageView mSave;
     private FloatingActionButton mFloatingActionButton;
     private boolean mIsFrontView;
+    private Canvas mCanvas;
+    private Bitmap mBitmap;
+    private Paint mPaint;
+    private int prvX, prvY;
 
 
     public static CardFragment newInstance(UUID cardId) {
@@ -78,7 +88,7 @@ public class CardFragment extends Fragment {
 
         mPhotoFile = CardLab.get(getActivity()).getPhotoFile(mCard);
         mBackPhotoFile = CardLab.get(getActivity()).getBackPhotoFile(mCard);
-        mDrawingFile = CardLab.get(getActivity()).getPhotoFile(mCard);
+        //mDrawingFile = CardLab.get(getActivity()).getPhotoFile(mCard);
 
         //((CardPagerActivity) getActivity()).setSubTitile("Showing front");
         setHasOptionsMenu(true);
@@ -121,6 +131,11 @@ public class CardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_card, container, false);
+
+        mPaint = new Paint();
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStrokeWidth(10);
 
         mShowCheckBox = (CheckBox)v.findViewById(R.id.card_show);
         mShowCheckBox.setChecked(mCard.isShown());
@@ -215,7 +230,7 @@ public class CardFragment extends Fragment {
         mPhotoView = (ImageView) v.findViewById(R.id.card_image);
         updatePhotoView();
 
-        mDrawingView = (DrawingView) v.findViewById(R.id.drawing_image);
+        //mDrawingView = (DrawingView) v.findViewById(R.id.drawing_image);
         //mSave = (ImageView) v.findViewById(R.id.drawing_image2);
         //updateDrawingView();
 
@@ -322,24 +337,104 @@ public class CardFragment extends Fragment {
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void updatePhotoView() {
 
+        Bitmap.Config config;
+        Bitmap bitmap = null;
+        mCanvas = null;
         if(mIsFrontView){
             if (mPhotoFile == null || !mPhotoFile.exists()) {
                 mPhotoView.setImageDrawable(null);
             } else {
-                Bitmap bitmap = PictureUtils.getScaledBitmap(
+                bitmap = PictureUtils.getScaledBitmap(
                         mPhotoFile.getPath(), getActivity());
-                mPhotoView.setImageBitmap(bitmap);
             }
         }else{
             if (mBackPhotoFile == null || !mBackPhotoFile.exists()) {
                 mPhotoView.setImageDrawable(null);
             } else {
-                Bitmap bitmap = PictureUtils.getScaledBitmap(
+                bitmap = PictureUtils.getScaledBitmap(
                         mBackPhotoFile.getPath(), getActivity());
-                mPhotoView.setImageBitmap(bitmap);
             }
+        }
+
+        if(bitmap != null){
+
+            if(bitmap.getConfig() != null){
+                config = bitmap.getConfig();
+            }else{
+                config = Bitmap.Config.ARGB_8888;
+            }
+            mBitmap = createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
+
+            mCanvas = new Canvas(mBitmap);
+            mCanvas.drawBitmap(bitmap, 0, 0, null);
+
+            mPhotoView.setImageBitmap(mBitmap);
+
+            mPhotoView.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    int action = event.getAction();
+                    int x = (int) event.getX();
+                    int y = (int) event.getY();
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            prvX = x;
+                            prvY = y;
+                            drawOnProjectedBitMap((ImageView) v,mBitmap , prvX, prvY, x, y);
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            drawOnProjectedBitMap((ImageView) v, mBitmap, prvX, prvY, x, y);
+                            prvX = x;
+                            prvY = y;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            drawOnProjectedBitMap((ImageView) v, mBitmap, prvX, prvY, x, y);
+                            //CardLab.saveBitmap(mBitmap);
+                            if(mIsFrontView) {
+                                CardLab.get(getActivity()).saveBitmap(mCard, mBitmap);
+                                Log.d("CardFrag", "ActionUP");
+                            }else{
+                                CardLab.get(getActivity()).saveBackBitmap(mCard, mBitmap);
+                            }
+                            break;
+                    }
+                    /*
+                     * Return 'true' to indicate that the event have been consumed.
+                     * If auto-generated 'false', your code can detect ACTION_DOWN only,
+                     * cannot detect ACTION_MOVE and ACTION_UP.
+                     */
+                    return true;
+                }
+            });
+        }
+    }
+
+    /*
+    Project position on ImageView to position on Bitmap draw on it
+     */
+
+    private void drawOnProjectedBitMap(ImageView iv, Bitmap bm,
+                                       float x0, float y0, float x, float y){
+        if(x<0 || y<0 || x > iv.getWidth() || y > iv.getHeight()){
+            //outside ImageView
+            return;
+        }else{
+
+            float ratioWidth = (float)bm.getWidth()/(float)iv.getWidth();
+            float ratioHeight = (float)bm.getHeight()/(float)iv.getHeight();
+
+            mCanvas.drawLine(
+                    x0 * ratioWidth,
+                    y0 * ratioHeight,
+                    x * ratioWidth,
+                    y * ratioHeight,
+                    mPaint);
+            mPhotoView.invalidate();
         }
     }
 
