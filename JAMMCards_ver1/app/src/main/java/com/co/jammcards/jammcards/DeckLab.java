@@ -50,6 +50,15 @@ public class DeckLab {
         mDatabase.insert(DeckTable.NAME, null, values);
     }
 
+    public void deleteDeck(Deck d) {
+        String selection = DeckTable.Cols.UUID + " =?";
+        String[] selectionArgs = new String[] { d.getId().toString() };
+
+        mDatabase.delete(DeckTable.NAME,
+                selection,
+                selectionArgs);
+    }
+
     public List<Deck> getDecks() {
         //return mDecks;
         //return new ArrayList<>();

@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_menu_add"
         android:title="@string/new_deck"
         app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/delete_card"
+        android:icon="@drawable/ic_menu_minus"
+        android:title="@string/delete_deck"
+        app:showAsAction="ifRoom|withText"/>
 
 
 </menu>

@@ -26,6 +26,7 @@ public class DeckListFragment extends Fragment {
     private RecyclerView mDeckRecyclerView;
     private FloatingActionButton mFloatingActionButton;
     private DeckAdapter mAdapter;
+    private boolean mDeleteDeck;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class DeckListFragment extends Fragment {
                 showAddDeckDialog();
             }
         });
+
+        mDeleteDeck = false;
 
         return view;
     }
@@ -127,6 +130,9 @@ public class DeckListFragment extends Fragment {
                 showAddDeckDialog();
                 return true;
 
+            case R.id.delete_card:
+                showDeleteDeckDialog();
+                return true;
         }
         return true;
     }
@@ -134,6 +140,35 @@ public class DeckListFragment extends Fragment {
     private void newDeckAlert(){
         //final View view = getLayoutInflater().inflate(R.layout.alert_new_deck, null);
         //AlertDialog alertDialog = new AlertDialog().Builder(getContext()).
+    }
+
+    private void showDeleteDeckDialog(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        //DeckLab.get(getActivity()).deleteDeck(mDeck);
+                        mDeleteDeck = true;
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage("Once you select a deck from the list it will be deleted. Continue?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+        alert.setTitle("Delete Deck");
+
+
     }
 
     private void updateUI() {
@@ -174,12 +209,35 @@ public class DeckListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-           // Toast.makeText(getActivity(),
-           //         mDeck.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
 
-            //Intent intent = new Intent(getActivity(), CardListActivity.class);
-            Intent intent = CardListActivity.newIntent(getActivity(), mDeck.getId());
-            startActivity(intent);
+            if(mDeleteDeck){
+                DialogInterface.OnClickListener dialogDeleteClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                DeckLab.get(getActivity()).deleteDeck(mDeck);
+                                mDeleteDeck = false;
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                mDeleteDeck = false;
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setMessage("Are you sure you want to delete " + mDeck.getTitle() + " ?")
+                        .setPositiveButton("Yes", dialogDeleteClickListener)
+                        .setNegativeButton("No", dialogDeleteClickListener).show();
+                alert.setTitle("Delete Deck");
+            }else{
+                Intent intent = CardListActivity.newIntent(getActivity(), mDeck.getId());
+                startActivity(intent);
+            }
         }
     }
 

@@ -9,6 +9,7 @@
     <string name="back_subtitle">Flip to Front</string>
     <string name="subtite_format">%1$d cards</string>
     <string name="delete_card">Delete Card</string>
+    <string name="delete_deck">Delete Deck</string>
     <string name="new_deck">New Deck</string>
     <string name="title_activity_main_quiz">MainQuiz</string>
     <string name="next_button">Next</string>
