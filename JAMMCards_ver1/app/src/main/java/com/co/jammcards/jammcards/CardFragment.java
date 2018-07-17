@@ -169,6 +169,13 @@ public class CardFragment extends Fragment {
         mFloatingActionButton = (FloatingActionButton)
                 v.findViewById(R.id.floating_flip_card_action_button);
 
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flipCard();
+            }
+        });
+
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.card_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -247,16 +254,20 @@ public class CardFragment extends Fragment {
                 return true;
 
             case R.id.card_subtitle: {
-                mIsFrontView = !mIsFrontView;
-                getActivity().invalidateOptionsMenu();;
-                updateSubtitle();
-                updatePhotoView();
-                updateCardText();
+                flipCard();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void flipCard(){
+        mIsFrontView = !mIsFrontView;
+        getActivity().invalidateOptionsMenu();;
+        updateSubtitle();
+        updatePhotoView();
+        updateCardText();
     }
 
     private void showDeleteCardDialog(){
