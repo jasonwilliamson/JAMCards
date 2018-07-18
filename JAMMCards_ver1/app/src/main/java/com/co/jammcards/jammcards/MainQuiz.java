@@ -130,10 +130,14 @@ public class MainQuiz extends AppCompatActivity {
             nextCard();
             return;
         }
-        cardImageFile = CardLab.get(this).getPhotoFile(mCard);
+        if (answer) {
+            cardImageFile = CardLab.get(this).getBackPhotoFile(mCard);
+        } else {
+            cardImageFile = CardLab.get(this).getPhotoFile(mCard);
+        }
         updatePhotoView();
         if (answer) {
-            currentCardTextView.setText(answers[current_card]);
+            currentCardTextView.setText(mCard.getBackText());
         } else {
             currentCardTextView.setText(mCard.getText());
         }
