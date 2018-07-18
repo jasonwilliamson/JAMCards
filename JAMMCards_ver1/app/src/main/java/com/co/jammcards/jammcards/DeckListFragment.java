@@ -151,7 +151,6 @@ public class DeckListFragment extends Fragment {
                         //Yes button clicked
                         //DeckLab.get(getActivity()).deleteDeck(mDeck);
                         mDeleteDeck = true;
-
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -219,7 +218,8 @@ public class DeckListFragment extends Fragment {
                                 //Yes button clicked
                                 DeckLab.get(getActivity()).deleteDeck(mDeck);
                                 mDeleteDeck = false;
-
+                                mAdapter.removeDeck(mDeck);
+                                mAdapter.notifyDataSetChanged();
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -269,6 +269,10 @@ public class DeckListFragment extends Fragment {
 
         public void setDecks(List<Deck> decks) {
             mDecks = decks;
+        }
+
+        public void removeDeck(Deck d){
+            mDecks.remove(d);
         }
     }
 

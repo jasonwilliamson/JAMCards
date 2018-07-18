@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -38,6 +40,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +69,7 @@ public class CardFragment extends Fragment {
     private Bitmap mBitmap;
     private Paint mPaint;
     private int prvX, prvY;
+    private boolean mDelete;
 
 
     public static CardFragment newInstance(UUID cardId) {
@@ -136,6 +140,8 @@ public class CardFragment extends Fragment {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(10);
+
+        mDelete = false;
 
         mShowCheckBox = (CheckBox)v.findViewById(R.id.card_show);
         mShowCheckBox.setChecked(mCard.isShown());
@@ -292,10 +298,13 @@ public class CardFragment extends Fragment {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-                        CardLab.get(getActivity()).deleteCard(mCard);
-                        Intent intent = CardListActivity
-                                .newIntent(getActivity(), mCurrentDeck.getId());
-                        startActivity(intent);
+                        if(!mDelete) {  //in event of stall while deleting ...prevent double clicks
+                            mDelete = true;
+                            CardLab.get(getActivity()).deleteCard(mCard);
+                            Intent intent = CardListActivity
+                                    .newIntent(getActivity(), mCurrentDeck.getId());
+                            startActivity(intent);
+                        }
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -337,11 +346,49 @@ public class CardFragment extends Fragment {
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
+    public Bitmap modifyOrientation(Bitmap bitmap, String image_absolute_path) throws IOException {
+        ExifInterface ei = new ExifInterface(image_absolute_path);
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotate(bitmap, 90);
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotate(bitmap, 180);
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotate(bitmap, 270);
+
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                return flip(bitmap, true, false);
+
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                return flip(bitmap, false, true);
+
+            default:
+                return bitmap;
+        }
+    }
+
+    public Bitmap rotate(Bitmap bitmap, float degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    public Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {
+        Matrix matrix = new Matrix();
+        matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void updatePhotoView() {
 
         Bitmap.Config config;
         Bitmap bitmap = null;
+        String imagePath  = "";
         mCanvas = null;
         if(mIsFrontView){
             if (mPhotoFile == null || !mPhotoFile.exists()) {
@@ -349,6 +396,7 @@ public class CardFragment extends Fragment {
             } else {
                 bitmap = PictureUtils.getScaledBitmap(
                         mPhotoFile.getPath(), getActivity());
+                imagePath = mPhotoFile.getAbsolutePath();
             }
         }else{
             if (mBackPhotoFile == null || !mBackPhotoFile.exists()) {
@@ -356,18 +404,28 @@ public class CardFragment extends Fragment {
             } else {
                 bitmap = PictureUtils.getScaledBitmap(
                         mBackPhotoFile.getPath(), getActivity());
+                imagePath = mBackPhotoFile.getAbsolutePath();
             }
         }
 
         if(bitmap != null){
 
-            if(bitmap.getConfig() != null){
+
+            /*if(bitmap.getConfig() != null){
                 config = bitmap.getConfig();
             }else{
                 config = Bitmap.Config.ARGB_8888;
+            }*/
+            //mBitmap = createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
+            //modifyOrientation
+            Bitmap workingBitmap = null;
+            try {
+                workingBitmap = modifyOrientation(bitmap, imagePath);
+            }catch (IOException e){
+                e.printStackTrace();
             }
-            mBitmap = createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
 
+            mBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
             mCanvas = new Canvas(mBitmap);
             mCanvas.drawBitmap(bitmap, 0, 0, null);
 
