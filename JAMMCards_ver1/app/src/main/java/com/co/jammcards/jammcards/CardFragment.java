@@ -283,7 +283,25 @@ public class CardFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        saveBitmap();;
+    }
+
+    private void saveBitmap(){
+        if(mBitmap != null) {
+            if (mIsFrontView) {
+                CardLab.get(getActivity()).saveBitmap(mCard, mBitmap);
+                Log.d("CardFrag", "ActionUP");
+            } else {
+                CardLab.get(getActivity()).saveBackBitmap(mCard, mBitmap);
+            }
+        }
+    }
+
     private void flipCard(){
+        saveBitmap();
         mIsFrontView = !mIsFrontView;
         getActivity().invalidateOptionsMenu();;
         updateSubtitle();
@@ -300,10 +318,15 @@ public class CardFragment extends Fragment {
                         //Yes button clicked
                         if(!mDelete) {  //in event of stall while deleting ...prevent double clicks
                             mDelete = true;
-                            CardLab.get(getActivity()).deleteCard(mCard);
+                            /*CardLab.get(getActivity()).deleteCard(mCard);
                             Intent intent = CardListActivity
                                     .newIntent(getActivity(), mCurrentDeck.getId());
-                            startActivity(intent);
+
+
+                            getActivity().getFragmentManager().popBackStack();
+                            startActivity(intent);*/
+                            CardLab.get(getActivity()).deleteCard(mCard);
+                            getActivity().finish();
                         }
                         break;
 
@@ -427,7 +450,7 @@ public class CardFragment extends Fragment {
 
             mBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
             mCanvas = new Canvas(mBitmap);
-            mCanvas.drawBitmap(bitmap, 0, 0, null);
+            //mCanvas.drawBitmap(bitmap, 0, 0, null);
 
             mPhotoView.setImageBitmap(mBitmap);
 
@@ -453,12 +476,6 @@ public class CardFragment extends Fragment {
                         case MotionEvent.ACTION_UP:
                             drawOnProjectedBitMap((ImageView) v, mBitmap, prvX, prvY, x, y);
                             //CardLab.saveBitmap(mBitmap);
-                            if(mIsFrontView) {
-                                CardLab.get(getActivity()).saveBitmap(mCard, mBitmap);
-                                Log.d("CardFrag", "ActionUP");
-                            }else{
-                                CardLab.get(getActivity()).saveBackBitmap(mCard, mBitmap);
-                            }
                             break;
                     }
                     /*

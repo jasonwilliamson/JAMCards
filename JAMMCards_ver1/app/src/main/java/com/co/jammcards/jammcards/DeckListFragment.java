@@ -131,7 +131,9 @@ public class DeckListFragment extends Fragment {
                 return true;
 
             case R.id.delete_card:
-                showDeleteDeckDialog();
+                if(mAdapter.getDeckCount() > 0) {
+                    showDeleteDeckDialog();
+                }
                 return true;
         }
         return true;
@@ -273,6 +275,10 @@ public class DeckListFragment extends Fragment {
 
         public void removeDeck(Deck d){
             mDecks.remove(d);
+        }
+
+        public int getDeckCount(){
+            return mDecks.size();
         }
     }
 
