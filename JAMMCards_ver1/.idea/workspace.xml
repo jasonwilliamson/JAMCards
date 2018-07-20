@@ -32,11 +32,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CardFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CardFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="301" column="31" lean-forward="false" selection-start-line="301" selection-start-column="31" selection-end-line="301" selection-end-column="31" />
+            <state relative-caret-position="534">
+              <caret line="409" column="5" lean-forward="false" selection-start-line="374" selection-start-column="4" selection-end-line="409" selection-end-column="5" />
+              <folding>
+                <element signature="e#4792#5016#0" expanded="true" />
+                <element signature="e#5015#5016#0" expanded="true" />
+                <element signature="e#6277#6424#0" expanded="true" />
+                <element signature="e#6423#6424#0" expanded="true" />
+                <element signature="e#6792#8058#0" expanded="true" />
+                <element signature="e#8057#8058#0" expanded="true" />
+                <element signature="e#8862#8885#0" expanded="true" />
+                <element signature="e#8937#8959#0" expanded="true" />
+                <element signature="e#10461#11585#0" expanded="true" />
+                <element signature="e#11584#11585#0" expanded="true" />
+                <element signature="e#15612#17173#0" expanded="true" />
+                <element signature="e#17172#17173#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PictureUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/PictureUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="355">
+              <caret line="66" column="59" lean-forward="false" selection-start-line="66" selection-start-column="56" selection-end-line="66" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -74,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainQuiz.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainQuiz.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/MainQuiz.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2235">
-              <caret line="162" column="14" lean-forward="false" selection-start-line="162" selection-start-column="8" selection-end-line="162" selection-end-column="14" />
+            <state relative-caret-position="372">
+              <caret line="195" column="91" lean-forward="false" selection-start-line="195" selection-start-column="91" selection-end-line="195" selection-end-column="91" />
               <folding />
             </state>
           </provider>
@@ -119,16 +142,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeckLab.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/DeckLab.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1590">
-              <caret line="117" column="52" lean-forward="false" selection-start-line="117" selection-start-column="52" selection-end-line="117" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="CardLab.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardLab.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -143,7 +156,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>context</find>
       <find>onOptionsItemSelected</find>
       <find>mDrawingFile</find>
       <find>mBitmap</find>
@@ -173,6 +185,7 @@
       <find>flip</find>
       <find>save</find>
       <find>saveBitmap</find>
+      <find>modifyOrientation</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -2209,9 +2222,9 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_card.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardLab.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_deck_quiz_stats.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/MainQuiz.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/DeckListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/MainQuiz.java" />
       </list>
     </option>
   </component>
@@ -2281,7 +2294,7 @@
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/JAMCards-master-267570b56d1ff294a3303e2e7f1122aa68479248/JAMMCards_ver1" />
-    <property name="device.picker.selection" value="0d96e833" />
+    <property name="device.picker.selection" value="ce0916099493d63705" />
     <property name="SearchEverywhereHistoryKey" value="updateSubtitle&#9;PSI&#9;JAVA://com.co.jammcards.jammcards.CardListFragment#updateSubtitle&#10;subtitle&#9;PSI&#9;JAVA://com.co.jammcards.jammcards.R.id#show_subtitle" />
   </component>
   <component name="RunDashboard">
@@ -2496,7 +2509,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#4792#5016#0" expanded="true" />
+            <element signature="e#5015#5016#0" expanded="true" />
+            <element signature="e#6277#6424#0" expanded="true" />
+            <element signature="e#6423#6424#0" expanded="true" />
+            <element signature="e#6792#8058#0" expanded="true" />
+            <element signature="e#8057#8058#0" expanded="true" />
+            <element signature="e#8862#8885#0" expanded="true" />
+            <element signature="e#8937#8959#0" expanded="true" />
+            <element signature="e#10461#11585#0" expanded="true" />
+            <element signature="e#11584#11585#0" expanded="true" />
+            <element signature="e#15612#17173#0" expanded="true" />
+            <element signature="e#17172#17173#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2561,6 +2587,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2568,6 +2595,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2575,6 +2603,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2648,6 +2677,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -2780,6 +2810,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="42" lean-forward="false" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2787,14 +2818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="413">
           <caret line="89" column="28" lean-forward="false" selection-start-line="89" selection-start-column="28" selection-end-line="89" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/PictureUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="66" column="59" lean-forward="false" selection-start-line="66" selection-start-column="56" selection-end-line="66" selection-end-column="59" />
           <folding />
         </state>
       </provider>
@@ -2811,6 +2834,7 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="43" column="24" lean-forward="false" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2">
@@ -2889,14 +2913,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/MainQuiz.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2235">
-          <caret line="162" column="14" lean-forward="false" selection-start-line="162" selection-start-column="8" selection-end-line="162" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -2913,10 +2929,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/PictureUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="66" column="59" lean-forward="false" selection-start-line="66" selection-start-column="56" selection-end-line="66" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/CardFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="301" column="31" lean-forward="false" selection-start-line="301" selection-start-column="31" selection-end-line="301" selection-end-column="31" />
+        <state relative-caret-position="534">
+          <caret line="409" column="5" lean-forward="false" selection-start-line="374" selection-start-column="4" selection-end-line="409" selection-end-column="5" />
+          <folding>
+            <element signature="e#4792#5016#0" expanded="true" />
+            <element signature="e#5015#5016#0" expanded="true" />
+            <element signature="e#6277#6424#0" expanded="true" />
+            <element signature="e#6423#6424#0" expanded="true" />
+            <element signature="e#6792#8058#0" expanded="true" />
+            <element signature="e#8057#8058#0" expanded="true" />
+            <element signature="e#8862#8885#0" expanded="true" />
+            <element signature="e#8937#8959#0" expanded="true" />
+            <element signature="e#10461#11585#0" expanded="true" />
+            <element signature="e#11584#11585#0" expanded="true" />
+            <element signature="e#15612#17173#0" expanded="true" />
+            <element signature="e#17172#17173#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/co/jammcards/jammcards/MainQuiz.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="195" column="91" lean-forward="false" selection-start-line="195" selection-start-column="91" selection-end-line="195" selection-end-column="91" />
           <folding />
         </state>
       </provider>
