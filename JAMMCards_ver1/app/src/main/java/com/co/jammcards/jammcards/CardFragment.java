@@ -70,6 +70,7 @@ public class CardFragment extends Fragment {
     private Paint mPaint;
     private int prvX, prvY;
     private boolean mDelete;
+    private boolean mIsChanged;
 
 
     public static CardFragment newInstance(UUID cardId) {
@@ -142,6 +143,7 @@ public class CardFragment extends Fragment {
         mPaint.setStrokeWidth(10);
 
         mDelete = false;
+        mIsChanged = false;
 
         mShowCheckBox = (CheckBox)v.findViewById(R.id.card_show);
         mShowCheckBox.setChecked(mCard.isShown());
@@ -290,13 +292,14 @@ public class CardFragment extends Fragment {
     }
 
     private void saveBitmap(){
-        if(mBitmap != null) {
+        if(mBitmap != null && mIsChanged) {
             if (mIsFrontView) {
                 CardLab.get(getActivity()).saveBitmap(mCard, mBitmap);
                 Log.d("CardFrag", "ActionUP");
             } else {
                 CardLab.get(getActivity()).saveBackBitmap(mCard, mBitmap);
             }
+            mIsChanged = false;
         }
     }
 
@@ -458,7 +461,7 @@ public class CardFragment extends Fragment {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-
+                    v.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
                     int action = event.getAction();
                     int x = (int) event.getX();
                     int y = (int) event.getY();
@@ -467,6 +470,7 @@ public class CardFragment extends Fragment {
                             prvX = x;
                             prvY = y;
                             drawOnProjectedBitMap((ImageView) v,mBitmap , prvX, prvY, x, y);
+                            mIsChanged = true;
                             break;
                         case MotionEvent.ACTION_MOVE:
                             drawOnProjectedBitMap((ImageView) v, mBitmap, prvX, prvY, x, y);
