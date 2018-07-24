@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
     tools:context=".DeckQuizStatsActivity">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/quizPieChart"
         android:layout_width="match_parent"
-        android:layout_height="377dp">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
     </com.github.mikephil.charting.charts.PieChart>
 
     <TextView
         android:id="@+id/best_card_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizPieChart" />
+        android:layout_marginTop="8dp"
+        android:text="test"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/worst_card_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/best_card_text"
-        app:layout_constraintVertical_bias="0.533" />
+        android:text="test"
+        android:textAlignment="center" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
